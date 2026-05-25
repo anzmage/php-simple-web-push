@@ -4,11 +4,11 @@ declare(strict_types=1);
 header('Content-Type: application/json');
 
 try {
-    $config = require __DIR__ . '/vapid.php';
+    $config = require __DIR__ . '/../config/vapid.php';
     $publicKey = trim((string)($config['public_key'] ?? ''));
 
     if ($publicKey === '') {
-        throw new RuntimeException('VAPID public key is empty. Edit vapid.php first.');
+        throw new RuntimeException('VAPID public key is empty. Edit config/vapid.php first.');
     }
 
     echo json_encode([

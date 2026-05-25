@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/web-push.php';
+require __DIR__ . '/../src/SimpleWebPushSender.php';
 
 header('Content-Type: application/json');
 
@@ -33,13 +33,13 @@ try {
         'url' => trim((string)($request['url'] ?? 'index.html')),
     ];
 
-    $config = require __DIR__ . '/vapid.php';
+    $config = require __DIR__ . '/../config/vapid.php';
 
     if (trim((string)($config['public_key'] ?? '')) === ''
         || trim((string)($config['private_key'] ?? '')) === ''
         || trim((string)($config['subject'] ?? '')) === ''
     ) {
-        throw new RuntimeException('VAPID config is incomplete. Edit vapid.php first.');
+        throw new RuntimeException('VAPID config is incomplete. Edit config/vapid.php first.');
     }
 
     $sender = new SimpleWebPushSender(

@@ -1,21 +1,40 @@
 # PHP Web Push CLI Demo
 
-This is a standalone Web Push demo. It does not use  Firebase, OneSignal, or any third-party push SDK.
+This is a standalone Web Push demo. It does not use Firebase, OneSignal, or any third-party push SDK.
 
 The browser registers a service worker and stores a Push API subscription. PHP can then send a real push notification to that browser subscription from either HTTP or CLI.
 
 ## Files
 
-- `index.html` - Demo page used in the browser.
-- `app.js` - Registers the service worker, subscribes the browser, and saves the subscription.
-- `sw.js` - Service worker that receives push events and displays notifications.
-- `save-subscription.php` - Saves the browser subscription into `subscription.json`.
-- `push-cli.php` - Sends a push notification from PHP CLI.
-- `push.php` - Sends a push notification from an HTTP POST request.
-- `web-push.php` - Minimal standalone Web Push sender implementation.
-- `vapid.example.php` - Example VAPID config.
-- `vapid.php` - Local VAPID config. This file is ignored by Git.
-- `subscription.json` - Local browser subscription. This file is ignored by Git.
+```text
+.
+├── bin/
+│   └── push
+├── config/
+│   └── vapid.example.php
+├── public/
+│   ├── app.js
+│   ├── config.php
+│   ├── index.html
+│   ├── push.php
+│   ├── save-subscription.php
+│   └── sw.js
+├── src/
+│   └── SimpleWebPushSender.php
+└── storage/
+    └── .gitkeep
+```
+
+- `public/index.html` - Demo page used in the browser.
+- `public/app.js` - Registers the service worker, subscribes the browser, and saves the subscription.
+- `public/sw.js` - Service worker that receives push events and displays notifications.
+- `public/save-subscription.php` - Saves the browser subscription into `storage/subscription.json`.
+- `public/push.php` - Sends a push notification from an HTTP POST request.
+- `bin/push` - Sends a push notification from PHP CLI.
+- `src/SimpleWebPushSender.php` - Minimal standalone Web Push sender implementation.
+- `config/vapid.example.php` - Example VAPID config.
+- `config/vapid.php` - Local VAPID config. This file is ignored by Git.
+- `storage/subscription.json` - Local browser subscription. This file is ignored by Git.
 
 ## Requirements
 
@@ -30,7 +49,7 @@ Service workers and Push API require a secure browser context. For a simple loca
 Copy the example VAPID config:
 
 ```bash
-cp vapid.example.php vapid.php
+cp config/vapid.example.php config/vapid.php
 ```
 
 Generate VAPID keys:
@@ -39,7 +58,7 @@ Generate VAPID keys:
 php -r '$k=openssl_pkey_new(["private_key_type"=>OPENSSL_KEYTYPE_EC,"curve_name"=>"prime256v1"]);$d=openssl_pkey_get_details($k);$b=function($v){return rtrim(strtr(base64_encode($v),"+/","-_"),"=");};echo "public=".$b("\x04".$d["ec"]["x"].$d["ec"]["y"]).PHP_EOL."private=".$b($d["ec"]["d"]).PHP_EOL;'
 ```
 
-Paste the generated values into `vapid.php`:
+Paste the generated values into `config/vapid.php`:
 
 ```php
 return [
@@ -56,7 +75,7 @@ Do not commit real VAPID private keys.
 From this demo directory:
 
 ```bash
-php -S 127.0.0.1:8788
+php -S 127.0.0.1:8788 -t public
 ```
 
 Open:
@@ -72,20 +91,20 @@ The browser will:
 1. Register `sw.js`.
 2. Request notification permission.
 3. Create a Push API subscription.
-4. Save the subscription to `subscription.json`.
+4. Save the subscription to `storage/subscription.json`.
 
 ## Send Push From PHP CLI
 
 After the browser subscription has been saved:
 
 ```bash
-php push-cli.php
+php bin/push
 ```
 
 With custom notification text:
 
 ```bash
-php push-cli.php "Hello from CLI" "This message was sent by PHP CLI."
+php bin/push "Hello from CLI" "This message was sent by PHP CLI."
 ```
 
 Expected successful output:

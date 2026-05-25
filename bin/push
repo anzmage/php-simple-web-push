@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/web-push.php';
+require __DIR__ . '/../src/SimpleWebPushSender.php';
 
 try {
-    $config = require __DIR__ . '/vapid.php';
-    $subscriptionFile = __DIR__ . '/subscription.json';
+    $config = require __DIR__ . '/../config/vapid.php';
+    $subscriptionFile = __DIR__ . '/../storage/subscription.json';
 
     if (!is_file($subscriptionFile)) {
         throw new RuntimeException('Subscription file not found. Open index.html and register first.');
@@ -15,7 +15,7 @@ try {
         || trim((string)($config['private_key'] ?? '')) === ''
         || trim((string)($config['subject'] ?? '')) === ''
     ) {
-        throw new RuntimeException('VAPID config is incomplete. Edit vapid.php first.');
+        throw new RuntimeException('VAPID config is incomplete. Edit config/vapid.php first.');
     }
 
     $subscription = json_decode((string)file_get_contents($subscriptionFile), true);

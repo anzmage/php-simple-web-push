@@ -21,7 +21,7 @@ try {
         throw new RuntimeException('Invalid push subscription.');
     }
 
-    $file = __DIR__ . '/subscription.json';
+    $file = __DIR__ . '/../storage/subscription.json';
     $saved = file_put_contents($file, json_encode($subscription, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     if ($saved === false) {
         throw new RuntimeException('Unable to write subscription file.');
@@ -29,7 +29,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'file' => 'subscription.json',
+        'file' => 'storage/subscription.json',
     ]);
 } catch (Throwable $exception) {
     http_response_code(500);
