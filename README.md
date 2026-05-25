@@ -1,6 +1,6 @@
 # PHP Web Push CLI Demo
 
-This is a standalone Web Push demo. It does not use Magento, Firebase, OneSignal, or any third-party push SDK.
+This is a standalone Web Push demo. It does not use  Firebase, OneSignal, or any third-party push SDK.
 
 The browser registers a service worker and stores a Push API subscription. PHP can then send a real push notification to that browser subscription from either HTTP or CLI.
 
