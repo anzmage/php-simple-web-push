@@ -59,7 +59,7 @@
         Promise.resolve()
             .then(assertSupported)
             .then(function () {
-                return fetch('/sw-demo/config.php', {
+                return fetch('config.php', {
                     credentials: 'same-origin'
                 });
             })
@@ -69,11 +69,9 @@
                     throw new Error(config.message || 'Unable to load push config.');
                 }
 
-                write('Registering /sw-demo/sw.js ...');
+                write('Registering sw.js ...');
 
-                return navigator.serviceWorker.register('/sw-demo/sw.js', {
-                    scope: '/sw-demo/'
-                }).then(function (registration) {
+                return navigator.serviceWorker.register('sw.js').then(function (registration) {
                     write('Service worker registered with scope: ' + registration.scope);
                     write('Requesting notification permission...');
 
@@ -97,7 +95,7 @@
                 write('Endpoint: ' + subscription.endpoint);
                 write('Saving subscription for PHP CLI...');
 
-                return fetch('/sw-demo/save-subscription.php', {
+                return fetch('save-subscription.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -132,7 +130,7 @@
         pushButton.disabled = true;
         write('Asking PHP to send Web Push...');
 
-        fetch('/sw-demo/push.php', {
+        fetch('push.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -142,7 +140,7 @@
                 subscription: activeSubscription.toJSON(),
                 title: titleInput.value,
                 body: bodyInput.value,
-                url: '/sw-demo/index.html'
+                url: 'index.html'
             })
         })
             .then(readJsonResponse)

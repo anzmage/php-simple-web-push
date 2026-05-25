@@ -25,7 +25,7 @@ self.addEventListener('push', function (event) {
         icon: data.icon || '/favicon.ico',
         badge: data.badge || '/favicon.ico',
         data: {
-            url: data.url || '/sw-demo/index.html'
+            url: data.url || 'index.html'
         }
     }));
 });
@@ -35,7 +35,7 @@ self.addEventListener('notificationclick', function (event) {
 
     var targetUrl = event.notification.data && event.notification.data.url
         ? event.notification.data.url
-        : '/sw-demo/index.html';
+        : 'index.html';
 
     event.waitUntil(clients.openWindow(targetUrl));
 });

@@ -8,14 +8,14 @@ try {
     $subscriptionFile = __DIR__ . '/subscription.json';
 
     if (!is_file($subscriptionFile)) {
-        throw new RuntimeException('Subscription file not found. Open /sw-demo/index.html and register first.');
+        throw new RuntimeException('Subscription file not found. Open index.html and register first.');
     }
 
     if (trim((string)($config['public_key'] ?? '')) === ''
         || trim((string)($config['private_key'] ?? '')) === ''
         || trim((string)($config['subject'] ?? '')) === ''
     ) {
-        throw new RuntimeException('VAPID config is incomplete. Edit pub/sw-demo/vapid.php first.');
+        throw new RuntimeException('VAPID config is incomplete. Edit vapid.php first.');
     }
 
     $subscription = json_decode((string)file_get_contents($subscriptionFile), true);
@@ -42,7 +42,7 @@ try {
     $status = $sender->send($pushSubscription, [
         'title' => $title,
         'body' => $body,
-        'url' => '/sw-demo/index.html',
+        'url' => 'index.html',
     ]);
 
     echo 'Push status: ' . $status . PHP_EOL;

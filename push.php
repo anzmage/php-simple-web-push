@@ -30,7 +30,7 @@ try {
     $payload = [
         'title' => trim((string)($request['title'] ?? 'PHP Web Push Demo')),
         'body' => trim((string)($request['body'] ?? 'This push notification was sent by PHP.')),
-        'url' => trim((string)($request['url'] ?? '/sw-demo/index.html')),
+        'url' => trim((string)($request['url'] ?? 'index.html')),
     ];
 
     $config = require __DIR__ . '/vapid.php';
@@ -39,7 +39,7 @@ try {
         || trim((string)($config['private_key'] ?? '')) === ''
         || trim((string)($config['subject'] ?? '')) === ''
     ) {
-        throw new RuntimeException('VAPID config is incomplete. Edit pub/sw-demo/vapid.php first.');
+        throw new RuntimeException('VAPID config is incomplete. Edit vapid.php first.');
     }
 
     $sender = new SimpleWebPushSender(

@@ -8,7 +8,7 @@ try {
     $publicKey = trim((string)($config['public_key'] ?? ''));
 
     if ($publicKey === '') {
-        throw new RuntimeException('VAPID public key is empty. Edit pub/sw-demo/vapid.php first.');
+        throw new RuntimeException('VAPID public key is empty. Edit vapid.php first.');
     }
 
     echo json_encode([

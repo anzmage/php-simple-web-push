@@ -29,7 +29,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'file' => 'pub/sw-demo/subscription.json',
+        'file' => 'subscription.json',
     ]);
 } catch (Throwable $exception) {
     http_response_code(500);

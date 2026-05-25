@@ -30,7 +30,7 @@ Service workers and Push API require a secure browser context. For a simple loca
 Copy the example VAPID config:
 
 ```bash
-cp pub/sw-demo/vapid.example.php pub/sw-demo/vapid.php
+cp vapid.example.php vapid.php
 ```
 
 Generate VAPID keys:
@@ -39,7 +39,7 @@ Generate VAPID keys:
 php -r '$k=openssl_pkey_new(["private_key_type"=>OPENSSL_KEYTYPE_EC,"curve_name"=>"prime256v1"]);$d=openssl_pkey_get_details($k);$b=function($v){return rtrim(strtr(base64_encode($v),"+/","-_"),"=");};echo "public=".$b("\x04".$d["ec"]["x"].$d["ec"]["y"]).PHP_EOL."private=".$b($d["ec"]["d"]).PHP_EOL;'
 ```
 
-Paste the generated values into `pub/sw-demo/vapid.php`:
+Paste the generated values into `vapid.php`:
 
 ```php
 return [
@@ -53,39 +53,39 @@ Do not commit real VAPID private keys.
 
 ## Run The Demo Server
 
-From the project root:
+From this demo directory:
 
 ```bash
-php -S 127.0.0.1:8788 -t pub
+php -S 127.0.0.1:8788
 ```
 
 Open:
 
 ```text
-http://127.0.0.1:8788/sw-demo/index.html
+http://127.0.0.1:8788/index.html
 ```
 
 Click **Register and Subscribe**.
 
 The browser will:
 
-1. Register `/sw-demo/sw.js`.
+1. Register `sw.js`.
 2. Request notification permission.
 3. Create a Push API subscription.
-4. Save the subscription to `pub/sw-demo/subscription.json`.
+4. Save the subscription to `subscription.json`.
 
 ## Send Push From PHP CLI
 
 After the browser subscription has been saved:
 
 ```bash
-php pub/sw-demo/push-cli.php
+php push-cli.php
 ```
 
 With custom notification text:
 
 ```bash
-php pub/sw-demo/push-cli.php "Hello from CLI" "This message was sent by PHP CLI."
+php push-cli.php "Hello from CLI" "This message was sent by PHP CLI."
 ```
 
 Expected successful output:
@@ -101,7 +101,7 @@ The demo page also has a **Send Push from PHP** button.
 That button sends an HTTP POST request to:
 
 ```text
-/sw-demo/push.php
+push.php
 ```
 
 `push.php` sends the same kind of real Web Push notification, but through an HTTP endpoint instead of CLI.
