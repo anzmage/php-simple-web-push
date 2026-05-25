@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PHP Web Push Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            margin: 40px;
+            max-width: 760px;
+        }
+
+        button {
+            cursor: pointer;
+            margin: 0 8px 8px 0;
+            padding: 10px 14px;
+        }
+
+        input {
+            box-sizing: border-box;
+            display: block;
+            margin: 6px 0 12px;
+            max-width: 520px;
+            padding: 8px;
+            width: 100%;
+        }
+
+        pre {
+            background: #f6f6f6;
+            border: 1px solid #ddd;
+            min-height: 180px;
+            padding: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>PHP Web Push Demo</h1>
+    <p>
+        This demo registers a service worker, subscribes this browser to Push API,
+        then asks PHP to send a real Web Push notification.
+    </p>
+
+    <button id="register">1. Register and Subscribe</button>
+    <button id="push" disabled>2. Send Push from PHP</button>
+
+    <label for="title">Notification title</label>
+    <input id="title" value="PHP Web Push Demo">
+
+    <label for="body">Notification body</label>
+    <input id="body" value="This push notification was sent by PHP.">
+
+    <h2>Log</h2>
+    <pre id="log"></pre>
+
+    <script src="/sw-demo/app.js"></script>
+</body>
+</html>

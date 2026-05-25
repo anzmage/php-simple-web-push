@@ -1,0 +1,53 @@
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/web-push.php';
+
+try {
+    $config = require __DIR__ . '/vapid.php';
+    $subscriptionFile = __DIR__ . '/subscription.json';
+
+    if (!is_file($subscriptionFile)) {
+        throw new RuntimeException('Subscription file not found. Open /sw-demo/index.html and register first.');
+    }
+
+    if (trim((string)($config['public_key'] ?? '')) === ''
+        || trim((string)($config['private_key'] ?? '')) === ''
+        || trim((string)($config['subject'] ?? '')) === ''
+    ) {
+        throw new RuntimeException('VAPID config is incomplete. Edit pub/sw-demo/vapid.php first.');
+    }
+
+    $subscription = json_decode((string)file_get_contents($subscriptionFile), true);
+    if (!is_array($subscription)) {
+        throw new RuntimeException('Invalid subscription file.');
+    }
+
+    $keys = is_array($subscription['keys'] ?? null) ? $subscription['keys'] : [];
+    $pushSubscription = [
+        'endpoint' => (string)($subscription['endpoint'] ?? ''),
+        'p256dh_key' => (string)($keys['p256dh'] ?? ''),
+        'auth_key' => (string)($keys['auth'] ?? ''),
+    ];
+
+    $title = $argv[1] ?? 'PHP CLI Web Push Demo';
+    $body = $argv[2] ?? 'This push notification was sent from PHP CLI.';
+
+    $sender = new SimpleWebPushSender(
+        (string)$config['subject'],
+        (string)$config['public_key'],
+        (string)$config['private_key']
+    );
+
+    $status = $sender->send($pushSubscription, [
+        'title' => $title,
+        'body' => $body,
+        'url' => '/sw-demo/index.html',
+    ]);
+
+    echo 'Push status: ' . $status . PHP_EOL;
+    exit($status === 201 ? 0 : 1);
+} catch (Throwable $exception) {
+    fwrite(STDERR, 'Error: ' . $exception->getMessage() . PHP_EOL);
+    exit(1);
+}
